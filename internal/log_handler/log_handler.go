@@ -4,7 +4,7 @@ import (
 	"io"
 	"time"
 
-	io_handler "github.com/Sdrf1445/ghostOps/internal/file_handler"
+	io_handler "github.com/Sdrf1445/ghostOps/internal/io_handler"
 )
 
 type LogHandler struct {
@@ -37,9 +37,9 @@ func (lh *LogHandler) HandleNext() (*LogData, bool, bool) {
 
 	severity := ParseSeverity(match[2])
 
-	service := match[2]
+	service := match[3]
 
-	logType := ParseLogType(match[3])
+	logType := ParseLogType(match[4])
 
 	logdata := NewLogData(timestamp, severity, service, logType, nil)
 
