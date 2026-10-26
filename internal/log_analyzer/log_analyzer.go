@@ -1,10 +1,10 @@
 package loganalyzer
 
 import (
-	"fmt"
 	"io"
 
 	loghandler "github.com/Sdrf1445/ghostOps/internal/log_handler"
+	logsummary "github.com/Sdrf1445/ghostOps/internal/log_summary"
 )
 
 type LogAnalyzer struct {
@@ -17,19 +17,19 @@ func NewLogAnalyzer(reader io.Reader) *LogAnalyzer {
 	return &la
 }
 
-func (la *LogAnalyzer) Analyze(logTypes loghandler.LogType) {
+func (la *LogAnalyzer) Analyze(logTypes loghandler.LogType) *logsummary.LogSummary {
 	severityCount := map[loghandler.Severity]int{}
 	serviceCount := map[string]int{}
 
 	malformedLines := 0
 	validLines := 0
 
-	logTypeMap := map[loghandler.LogType]*LogTypeData{}
+	logTypeMap := map[loghandler.LogType]*logsummary.LogTypeData{}
 
 	resultLogTypes := logTypes.GetAllLogTypes()
 
 	for _, v := range resultLogTypes {
-		ltd := NewLogTypeData()
+		ltd := logsummary.NewLogTypeData()
 		logTypeMap[v] = ltd
 	}
 
@@ -55,47 +55,50 @@ func (la *LogAnalyzer) Analyze(logTypes loghandler.LogType) {
 
 		for _, v := range resultLogTypes {
 			if data.Logtype == v {
-				logTypeMap[v].logTypePresent = true
-				logTypeMap[v].logTypeServices[data.Service] = true
-				logTypeMap[v].logTypeSeverities[data.Severity] = true
-				if data.Timestamp.Before(logTypeMap[v].logTypeStartTime) {
-					logTypeMap[v].logTypeStartTime = data.Timestamp
-				} else if data.Timestamp.After(logTypeMap[v].logTypeEndTime) {
-					logTypeMap[v].logTypeEndTime = data.Timestamp
+				logTypeMap[v].LogTypePresent = true
+				logTypeMap[v].LogTypeServices[data.Service] = true
+				logTypeMap[v].LogTypeSeverities[data.Severity] = true
+				if data.Timestamp.Before(logTypeMap[v].LogTypeStartTime) {
+					logTypeMap[v].LogTypeStartTime = data.Timestamp
+				} else if data.Timestamp.After(logTypeMap[v].LogTypeEndTime) {
+					logTypeMap[v].LogTypeEndTime = data.Timestamp
 				}
 			}
 		}
 	}
 
-	fmt.Println("Malformed lines: ", malformedLines)
-	fmt.Println("Valid lines: ", malformedLines)
-	fmt.Println("")
-	fmt.Println("Entry count by severity: ")
+	ls := logsummary.New(malformedLines, validLines, severityCount, serviceCount, logTypeMap)
+	return ls
 
-	for i, v := range severityCount {
-		fmt.Println(loghandler.GetSeverityString(i), "", v)
-	}
-	fmt.Println("")
-	fmt.Println("Entry count by service: ")
-	for i, v := range serviceCount {
-		fmt.Println(i, "", v)
-	}
-	fmt.Println("")
-	if dbCrash {
-		fmt.Println("Database connection exaustion crash")
-		fmt.Println("Severities:")
-		for i, v := range dbCrashSeverities {
-			if v {
-				fmt.Println(loghandler.GetSeverityString(i))
-			}
-		}
-		fmt.Println("Services:")
-		for i, v := range dbCrashServices {
-			if v {
-				fmt.Println(i)
-			}
-		}
-		fmt.Println("Time start:", dbCrashStartTime)
-		fmt.Println("Time end:", dbCrashEndTime)
-	}
+	// fmt.Println("Malformed lines: ", malformedLines)
+	// fmt.Println("Valid lines: ", malformedLines)
+	// fmt.Println("")
+	// fmt.Println("Entry count by severity: ")
+
+	// for i, v := range severityCount {
+	// 	fmt.Println(loghandler.GetSeverityString(i), "", v)
+	// }
+	// fmt.Println("")
+	// fmt.Println("Entry count by service: ")
+	// for i, v := range serviceCount {
+	// 	fmt.Println(i, "", v)
+	// }
+	// fmt.Println("")
+	// if dbCrash {
+	// 	fmt.Println("Database connection exaustion crash")
+	// 	fmt.Println("Severities:")
+	// 	for i, v := range dbCrashSeverities {
+	// 		if v {
+	// 			fmt.Println(loghandler.GetSeverityString(i))
+	// 		}
+	// 	}
+	// 	fmt.Println("Services:")
+	// 	for i, v := range dbCrashServices {
+	// 		if v {
+	// 			fmt.Println(i)
+	// 		}
+	// 	}
+	// 	fmt.Println("Time start:", dbCrashStartTime)
+	// 	fmt.Println("Time end:", dbCrashEndTime)
+	// }
 }
