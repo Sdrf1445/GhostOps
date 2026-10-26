@@ -42,7 +42,52 @@ const (
 	TypePaymentGatewayTimout
 	TypeHttp
 	TypeRateLimitApproaching
+	TypeCacheRefresh
+	TypeWebhookRecieved
 )
+
+func ParseLogType(message string) LogType {
+	if ReLoginSuccess.MatchString(message) {
+		return TypeUserLogin
+	}
+	if ReTokenGenerated.MatchString(message) {
+		return TypeTokenGeneration
+	}
+	if ReDbExhaust.MatchString(message) {
+		return TypeDatabasePoolExaustion
+	}
+	if ReDbThreshold.MatchString(message) {
+		return TypeDatabasePoolThresholdApproaching
+	}
+	if ReDbTimeout.MatchString(message) {
+		return TypeDatabaseConnectionTimeout
+	}
+	if ReSqlSyntax.MatchString(message) {
+		return TypeDatabaseWronSyntax
+	}
+	if ReMemory.MatchString(message) {
+		return TypeHighMemoryUsage
+	}
+	if ReDeprecated.MatchString(message) {
+		return TypeDepracatedAPIEndpoint
+	}
+	if RePayTimeout.MatchString(message) {
+		return TypePaymentGatewayTimout
+	}
+	if ReHttp.MatchString(message) {
+		return TypeHttp
+	}
+	if ReRateLimit.MatchString(message) {
+		return TypeRateLimitApproaching
+	}
+	if ReCacheRefreshed.MatchString(message) {
+		return TypeCacheRefresh
+	}
+	if ReWebhookReceived.MatchString(message) {
+		return TypeWebhookRecieved
+	}
+	return TypeUnkown
+}
 
 type HttpMethod int
 
@@ -86,5 +131,11 @@ type LogData struct {
 	timestamp time.Time
 	severity  Severity
 	service   string
+	logtype   LogType
 	data      any
+}
+
+func NewLogData(timestamp time.Time, severity Severity, service string, logtype LogType, data any) *LogData {
+	logData := LogData{timestamp: timestamp, severity: severity, service: service, data: data, logtype: logtype}
+	return &logData
 }

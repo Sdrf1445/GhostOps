@@ -2,7 +2,7 @@ package log_handler
 
 import (
 	"io"
-	"regexp"
+	"time"
 
 	io_handler "github.com/Sdrf1445/ghostOps/internal/file_handler"
 )
@@ -19,15 +19,29 @@ func NewLogHandler(reader io.Reader) *LogHandler {
 	return &logHandler
 }
 
-var re = regexp.MustCompile(`(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z) (INFO|WARN|FATAL|ERROR) (\S+) (.+?)`)
-
-func (lh *LogHandler) HandleNext() (string, bool) {
+func (lh *LogHandler) HandleNext() (*LogData, bool, bool) {
 	line, success := lh.iohandler.ReadLine()
 	if !success {
-		return "", false
+		return nil, false, true
 	}
 
-	if !re.MatchString(line) {
-		return "", false
+	if !ReLogLine.MatchString(line) {
+		return nil, false, false
 	}
+	match := ReLogLine.FindStringSubmatch(line)
+
+	timestamp, err := time.Parse(time.RFC3339, match[1])
+	if err != nil {
+		return nil, false, false
+	}
+
+	severity := ParseSeverity(match[2])
+
+	service := match[2]
+
+	logType := ParseLogType(match[3])
+
+	logdata := NewLogData(timestamp, severity, service, logType, nil)
+
+	return logdata, true, false
 }
