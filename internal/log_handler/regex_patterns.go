@@ -3,7 +3,7 @@ package log_handler
 import "regexp"
 
 var (
-	ReLogLine     = regexp.MustCompile(`(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z) (INFO|WARN|FATAL|ERROR) (\S+) (.+?)`)
+	ReLogLine     = regexp.MustCompile(`(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z) (INFO|WARN|FATAL|ERROR) (\S+) (.+)`)
 	ReHttp        = regexp.MustCompile(`^HTTP ([A-Z]+) (\S+) status=([0-9]{3}) duration=([0-9]+)ms$`)
 	ReRateLimit   = regexp.MustCompile(`^Rate limit approaching for client IP (\S+)$`)
 	ReDeprecated  = regexp.MustCompile(`^Deprecated API endpoint (\S+) accessed$`)
