@@ -1,6 +1,8 @@
-package log_handler
+package loghandler
 
-import "time"
+import (
+	"time"
+)
 
 type Severity int
 
@@ -45,7 +47,7 @@ func GetSeverityString(severity Severity) string {
 type LogType int
 
 const (
-	TypeUnkown LogType = iota
+	TypeUnkown LogType = 1 << iota
 	TypeUserLogin
 	TypeTokenGeneration
 	TypeDatabasePoolExaustion
@@ -60,6 +62,57 @@ const (
 	TypeCacheRefresh
 	TypeWebhookRecieved
 )
+
+func (logtype LogType) HasFlag(input LogType) bool {
+	return logtype&input != 0
+}
+
+func (logTypes LogType) GetAllLogTypes() []LogType {
+	result := []LogType{}
+	for logTypes != 0 {
+		flag := logTypes & -logTypes
+
+		result = append(result, flag)
+
+		logTypes &= logTypes - 1
+	}
+	return result
+}
+
+func (logtype *LogType) GetLogTypeString() string {
+	switch *logtype {
+	case TypeUnkown:
+		return "Unknown"
+	case TypeUserLogin:
+		return "User logins"
+	case TypeTokenGeneration:
+		return "User token generations"
+	case TypeDatabasePoolExaustion:
+		return "Database connection pool exhaustion"
+	case TypeDatabasePoolThresholdApproaching:
+		return "Database connection pool threshold approaching"
+	case TypeDatabaseConnectionTimeout:
+		return "Database connection timeout"
+	case TypeDatabaseWronSyntax:
+		return "Database wrong syntax"
+	case TypeHighMemoryUsage:
+		return "High memory usage"
+	case TypeDepracatedAPIEndpoint:
+		return "Deprecated API endpoint"
+	case TypePaymentGatewayTimout:
+		return "Payment gateway timeout"
+	case TypeHttp:
+		return "HTTP"
+	case TypeRateLimitApproaching:
+		return "Rate limit approaching"
+	case TypeCacheRefresh:
+		return "Cache refresh"
+	case TypeWebhookRecieved:
+		return "Webhook received"
+	default:
+		return "Unknown log type"
+	}
+}
 
 func ParseLogType(message string) LogType {
 	if ReLoginSuccess.MatchString(message) {

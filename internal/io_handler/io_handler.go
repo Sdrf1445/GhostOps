@@ -1,4 +1,4 @@
-package io_handler
+package iohandler
 
 import (
 	"bufio"

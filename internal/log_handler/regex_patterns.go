@@ -1,4 +1,4 @@
-package log_handler
+package loghandler
 
 import "regexp"
 

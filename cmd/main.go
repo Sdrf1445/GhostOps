@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Sdrf1445/ghostOps/internal/log_handler"
+	loghandler "github.com/Sdrf1445/ghostOps/internal/log_handler"
 )
 
 func main() {
@@ -15,9 +15,9 @@ func main() {
 		return
 	}
 
-	lh := log_handler.NewLogHandler(file)
+	lh := loghandler.NewLogHandler(file)
 
-	severityCount := map[log_handler.Severity]int{}
+	severityCount := map[loghandler.Severity]int{}
 	serviceCount := map[string]int{}
 
 	malformedLines := 0
@@ -27,7 +27,7 @@ func main() {
 	dbCrashServices := map[string]bool{}
 	dbCrashStartTime := time.Now()
 	dbCrashEndTime := time.Time{}
-	dbCrashSeverities := map[log_handler.Severity]bool{}
+	dbCrashSeverities := map[loghandler.Severity]bool{}
 
 	index := 0
 
@@ -43,7 +43,7 @@ func main() {
 		severityCount[data.Severity]++
 		serviceCount[data.Service]++
 
-		if data.Logtype == log_handler.TypeDatabasePoolExaustion {
+		if data.Logtype == loghandler.TypeDatabasePoolExaustion {
 			dbCrash = true
 			dbCrashServices[data.Service] = true
 			dbCrashSeverities[data.Severity] = true
@@ -61,7 +61,7 @@ func main() {
 	fmt.Println("Entry count by severity: ")
 
 	for i, v := range severityCount {
-		fmt.Println(log_handler.GetSeverityString(i), "", v)
+		fmt.Println(loghandler.GetSeverityString(i), "", v)
 	}
 	fmt.Println("")
 	fmt.Println("Entry count by service: ")
@@ -74,7 +74,7 @@ func main() {
 		fmt.Println("Severities:")
 		for i, v := range dbCrashSeverities {
 			if v {
-				fmt.Println(log_handler.GetSeverityString(i))
+				fmt.Println(loghandler.GetSeverityString(i))
 			}
 		}
 		fmt.Println("Services:")
