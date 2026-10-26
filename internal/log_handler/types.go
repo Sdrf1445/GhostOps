@@ -27,6 +27,21 @@ func ParseSeverity(severity string) Severity {
 	}
 }
 
+func GetSeverityString(severity Severity) string {
+	switch severity {
+	case SevINFO:
+		return "INFO"
+	case SevWARN:
+		return "WARN"
+	case SevERROR:
+		return "ERROR"
+	case SevFATAL:
+		return "FATAL"
+	default:
+		return "Unkown"
+	}
+}
+
 type LogType int
 
 const (
@@ -128,14 +143,14 @@ type TypePaymentGatewayTimoutData struct {
 }
 
 type LogData struct {
-	timestamp time.Time
-	severity  Severity
-	service   string
-	logtype   LogType
-	data      any
+	Timestamp time.Time
+	Severity  Severity
+	Service   string
+	Logtype   LogType
+	Data      any
 }
 
 func NewLogData(timestamp time.Time, severity Severity, service string, logtype LogType, data any) *LogData {
-	logData := LogData{timestamp: timestamp, severity: severity, service: service, data: data, logtype: logtype}
+	logData := LogData{Timestamp: timestamp, Severity: severity, Service: service, Data: data, Logtype: logtype}
 	return &logData
 }
