@@ -69,36 +69,4 @@ func (la *LogAnalyzer) Analyze(logTypes loghandler.LogType) *logsummary.LogSumma
 
 	ls := logsummary.New(malformedLines, validLines, severityCount, serviceCount, logTypeMap)
 	return ls
-
-	// fmt.Println("Malformed lines: ", malformedLines)
-	// fmt.Println("Valid lines: ", malformedLines)
-	// fmt.Println("")
-	// fmt.Println("Entry count by severity: ")
-
-	// for i, v := range severityCount {
-	// 	fmt.Println(loghandler.GetSeverityString(i), "", v)
-	// }
-	// fmt.Println("")
-	// fmt.Println("Entry count by service: ")
-	// for i, v := range serviceCount {
-	// 	fmt.Println(i, "", v)
-	// }
-	// fmt.Println("")
-	// if dbCrash {
-	// 	fmt.Println("Database connection exaustion crash")
-	// 	fmt.Println("Severities:")
-	// 	for i, v := range dbCrashSeverities {
-	// 		if v {
-	// 			fmt.Println(loghandler.GetSeverityString(i))
-	// 		}
-	// 	}
-	// 	fmt.Println("Services:")
-	// 	for i, v := range dbCrashServices {
-	// 		if v {
-	// 			fmt.Println(i)
-	// 		}
-	// 	}
-	// 	fmt.Println("Time start:", dbCrashStartTime)
-	// 	fmt.Println("Time end:", dbCrashEndTime)
-	// }
 }
