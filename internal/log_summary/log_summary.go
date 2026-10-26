@@ -10,34 +10,34 @@ import (
 )
 
 type LogSummary struct {
-	malformedLines int
-	validLines     int
-	severities     map[loghandler.Severity]int
-	services       map[string]int
-	incidents      map[loghandler.LogType]*LogTypeData
+	MalformedLines int
+	ValidLines     int
+	Severities     map[loghandler.Severity]int
+	Services       map[string]int
+	Incidents      map[loghandler.LogType]*LogTypeData
 }
 
 func New(malformedLines int, validLines int, severities map[loghandler.Severity]int, services map[string]int, incidents map[loghandler.LogType]*LogTypeData) *LogSummary {
-	ls := LogSummary{malformedLines: malformedLines, validLines: validLines, severities: severities, services: services, incidents: incidents}
+	ls := LogSummary{MalformedLines: malformedLines, ValidLines: validLines, Severities: severities, Services: services, Incidents: incidents}
 	return &ls
 }
 
 func (ls *LogSummary) Fprint(writer io.Writer) {
-	fmt.Fprintf(writer, "Malformed lines: %d\n", ls.malformedLines)
-	fmt.Fprintf(writer, "Valid lines: %d\n", ls.validLines)
+	fmt.Fprintf(writer, "Malformed lines: %d\n", ls.MalformedLines)
+	fmt.Fprintf(writer, "Valid lines: %d\n", ls.ValidLines)
 	fmt.Fprintln(writer)
 	fmt.Fprintf(writer, "Severity count:\n")
-	for severity, count := range ls.severities {
+	for severity, count := range ls.Severities {
 		fmt.Fprintf(writer, "%s %d\n", loghandler.GetSeverityString(severity), count)
 	}
 	fmt.Fprintln(writer)
 	fmt.Fprintf(writer, "Service count:\n")
-	for service, count := range ls.services {
+	for service, count := range ls.Services {
 		fmt.Fprintf(writer, "%s %d\n", service, count)
 	}
 	fmt.Fprintln(writer)
 
-	for incident, incidentData := range ls.incidents {
+	for incident, incidentData := range ls.Incidents {
 		if !incidentData.LogTypePresent {
 			continue
 		}

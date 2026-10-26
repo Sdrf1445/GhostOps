@@ -44,6 +44,10 @@ func GetSeverityString(severity Severity) string {
 	}
 }
 
+func (s Severity) MarshalText() ([]byte, error) {
+	return []byte(GetSeverityString(s)), nil
+}
+
 type LogType int
 
 const (
@@ -62,6 +66,10 @@ const (
 	TypeCacheRefresh
 	TypeWebhookRecieved
 )
+
+func (lt LogType) MarshalText() ([]byte, error) {
+	return []byte(lt.GetLogTypeString()), nil
+}
 
 func (logtype LogType) HasFlag(input LogType) bool {
 	return logtype&input != 0

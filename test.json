@@ -1,1 +1,118 @@
-{}
+{
+  "MalformedLines": 468,
+  "ValidLines": 5532,
+  "Severities": {
+    "ERROR": 820,
+    "FATAL": 271,
+    "INFO": 3335,
+    "WARN": 1106
+  },
+  "Services": {
+    "auth-service": 1106,
+    "notification-service": 1130,
+    "order-service": 1082,
+    "payment-service": 1090,
+    "user-service": 1124
+  },
+  "Incidents": {
+    "Database connection pool exhaustion": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "auth-service": true,
+        "notification-service": true,
+        "order-service": true,
+        "payment-service": true,
+        "user-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T00:52:07Z",
+      "LogTypeEndTime": "2026-10-06T18:49:45Z",
+      "LogTypeSeverities": {
+        "FATAL": true
+      }
+    },
+    "Database connection pool threshold approaching": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "auth-service": true,
+        "notification-service": true,
+        "order-service": true,
+        "payment-service": true,
+        "user-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T00:04:53Z",
+      "LogTypeEndTime": "2026-10-06T18:36:10Z",
+      "LogTypeSeverities": {
+        "WARN": true
+      }
+    },
+    "Database connection timeout": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "auth-service": true,
+        "notification-service": true,
+        "order-service": true,
+        "user-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T01:04:45Z",
+      "LogTypeEndTime": "2026-10-06T16:45:55Z",
+      "LogTypeSeverities": {
+        "ERROR": true
+      }
+    },
+    "Database wrong syntax": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "auth-service": true,
+        "notification-service": true,
+        "order-service": true,
+        "user-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T01:52:05Z",
+      "LogTypeEndTime": "2026-10-06T14:47:58Z",
+      "LogTypeSeverities": {
+        "ERROR": true
+      }
+    },
+    "Deprecated API endpoint": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "auth-service": true,
+        "notification-service": true,
+        "order-service": true,
+        "payment-service": true,
+        "user-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T00:34:33Z",
+      "LogTypeEndTime": "2026-10-06T17:29:45Z",
+      "LogTypeSeverities": {
+        "WARN": true
+      }
+    },
+    "High memory usage": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "auth-service": true,
+        "notification-service": true,
+        "order-service": true,
+        "payment-service": true,
+        "user-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T00:06:02Z",
+      "LogTypeEndTime": "2026-10-06T18:04:30Z",
+      "LogTypeSeverities": {
+        "WARN": true
+      }
+    },
+    "Payment gateway timeout": {
+      "LogTypePresent": true,
+      "LogTypeServices": {
+        "payment-service": true
+      },
+      "LogTypeStartTime": "2026-10-01T00:24:58Z",
+      "LogTypeEndTime": "2026-10-06T17:19:29Z",
+      "LogTypeSeverities": {
+        "ERROR": true
+      }
+    }
+  }
+}
