@@ -1,53 +1,5 @@
 package loghandler
 
-import (
-	"time"
-)
-
-type Severity int
-
-const (
-	SevUnknown Severity = iota
-	SevINFO
-	SevWARN
-	SevERROR
-	SevFATAL
-)
-
-func ParseSeverity(severity string) Severity {
-	switch severity {
-	case "INFO":
-		return SevINFO
-	case "WARN":
-		return SevWARN
-	case "ERROR":
-		return SevERROR
-	case "FATAL":
-		return SevFATAL
-	default:
-		return SevUnknown
-	}
-}
-
-func GetSeverityString(severity Severity) string {
-	switch severity {
-	case SevINFO:
-		return "INFO"
-	case SevWARN:
-		return "WARN"
-	case SevERROR:
-		return "ERROR"
-	case SevFATAL:
-		return "FATAL"
-	default:
-		return "Unkown"
-	}
-}
-
-func (s Severity) MarshalText() ([]byte, error) {
-	return []byte(GetSeverityString(s)), nil
-}
-
 type LogType int
 
 const (
@@ -163,55 +115,4 @@ func ParseLogType(message string) LogType {
 		return TypeWebhookRecieved
 	}
 	return TypeUnkown
-}
-
-type HttpMethod int
-
-const (
-	MethodGet HttpMethod = iota
-	MethodPost
-	MethodPut
-	MethodPatch
-	MethodDelete
-)
-
-type TypeHttpData struct {
-	method      string
-	path        string
-	status      int
-	duration_ms int
-}
-
-type TypeRateLimitData struct {
-	clientip string
-}
-
-type TypeDepractedEndpointData struct {
-	endpoint string
-}
-
-type TypeDatabasePoolThresholdData struct {
-	util_percent int
-}
-
-type TypeHighMemoryUsageData struct {
-	memory_percent int
-}
-
-type TypePaymentGatewayTimoutData struct {
-	status int
-	reason string
-}
-
-type LogData struct {
-	Timestamp time.Time
-	Severity  Severity
-	Service   string
-	Logtype   LogType
-	Data      any
-}
-
-func NewLogData(timestamp time.Time, severity Severity, service string, logtype LogType, data any) *LogData {
-	logData := LogData{Timestamp: timestamp, Severity: severity, Service: service, Data: data, Logtype: logtype}
-	return &logData
 }
